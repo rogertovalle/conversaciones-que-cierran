@@ -35,10 +35,18 @@
   const rueda = $("#rueda");
   let ruedaLista = false, ruedaCmd = null, pendiente = null;
   addEventListener("message", (ev) => {
-    if (ev.source !== rueda.contentWindow || !ev.data || ev.data.tipo !== "rueda-lista" || ruedaLista) return;
+    if (ev.source !== rueda.contentWindow || !ev.data || ev.data.tipo !== "rueda-lista") return;
+    try { rueda.contentWindow.postMessage({ tipo: "rueda-hola", ok: true }, "*"); } catch (e) {}
+    if (ruedaLista) return;
     ruedaLista = true; rueda.classList.add("lista");
     if (pendiente) { const p = pendiente; pendiente = null; ordenRueda(p, true); }
   });
+  /* por si la rueda avisó antes de que este motor escuchara: preguntarle hasta que conteste */
+  (function hola(n) {
+    if (ruedaLista || n > 200) return;
+    try { rueda.contentWindow && rueda.contentWindow.postMessage({ tipo: "rueda-hola" }, "*"); } catch (e) {}
+    setTimeout(() => hola(n + 1), 150);
+  })(0);
   function ordenRueda(cmd, forzar) {
     if (!cmd) return;
     if (!ruedaLista) { pendiente = cmd; return; }

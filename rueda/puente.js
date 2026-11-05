@@ -37,12 +37,17 @@
       }
     } catch (err) { console.warn("rueda:", cmd, err); }
   }
+  const lista = () => !!(window.escena && d.querySelector("#escena[data-listo]"));
+  let confirmada = false;
   addEventListener("message", (ev) => {
-    const m = ev.data;
-    if (m && m.tipo === "rueda" && m.cmd) orden(m.cmd);
+    const m = ev.data; if (!m) return;
+    if (m.tipo === "rueda" && m.cmd) { confirmada = true; orden(m.cmd); }
+    else if (m.tipo === "rueda-hola") { if (m.ok) confirmada = true; if (lista()) parent.postMessage({ tipo: "rueda-lista" }, "*"); }
   });
-  (function avisar() {
-    if (window.escena && d.querySelector("#escena[data-listo]")) parent.postMessage({ tipo: "rueda-lista" }, "*");
-    else setTimeout(avisar, 100);
-  })();
+  /* avisa hasta que la presentación confirme (si el motor aún no escuchaba, el aviso no se pierde) */
+  (function avisar(n) {
+    if (confirmada || n > 300) return;
+    if (lista()) parent.postMessage({ tipo: "rueda-lista" }, "*");
+    setTimeout(() => avisar(n + 1), lista() ? 400 : 100);
+  })(0);
 })();

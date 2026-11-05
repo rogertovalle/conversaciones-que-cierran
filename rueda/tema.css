@@ -1,0 +1,5 @@
+/* Tema Victoriia Studio para la rueda (tinta y papel). La presentación lo reemplaza al incrustarla. */
+:root{--atril-fondo:#F5F3EF;--atril-superficie:#FBFAF6;--atril-tinta:#0A1F2E;--atril-tenue:#536873;--atril-sutil:#536873;
+--atril-linea:#D9D3C5;--atril-acento:#0A1F2E;--atril-acento-texto:#0A1F2E;--atril-acento-2:#3A5563;--atril-acento-3:#536873;
+--atril-aviso:#7A5A00;--atril-exito:#006B57;--atril-alerta:#B81730;
+--atril-fuente-display:'Fraunces',Georgia,serif;--atril-fuente-texto:'IBM Plex Sans',Arial,sans-serif;--atril-fuente-ui:'IBM Plex Sans',Arial,sans-serif;--atril-radio:2px}
